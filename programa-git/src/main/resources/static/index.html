@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Robot Store</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #111827;
+        }
+
+        header {
+            background: white;
+            border-bottom: 2px solid #e5e7eb;
+            padding: 18px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .logo span {
+            color: #0ea5e9;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #111827;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0ea5e9;
+        }
+
+        .cart {
+            background: #0ea5e9;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 25px;
+        }
+
+        .title-section {
+            margin-bottom: 25px;
+        }
+
+        .title-section h2 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .title-section p {
+            color: #6b7280;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #d1d5db;
+            padding: 18px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .robot-image {
+            height: 210px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .product-card h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .model {
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            color: #0284c7;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stock {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            width: 100%;
+            padding: 11px;
+            border: 2px solid #0ea5e9;
+            background: white;
+            color: #0284c7;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .details:hover {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <div class="logo-icon">🤖</div>
+
+        <h1>
+            Robot <span>Store</span>
+        </h1>
+    </div>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/">Productos</a>
+        <a href="#">Nosotros</a>
+        <a href="#">Contacto</a>
+
+        <a href="#" class="cart">
+            🛒 Carrito
+        </a>
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="title-section">
+        <h2>Productos</h2>
+
+        <p>
+            Explora nuestra selección de robots y componentes de robótica.
+        </p>
+    </section>
+
+    <section class="toolbar">
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="Buscar robots..."
+        >
+
+    </section>
+
+    <section id="products" class="products-grid">
+
+        <div class="loading">
+            Cargando robots...
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+    let productos = [];
+
+    // Consulta los robots registrados en el backend.
+    fetch('/productos')
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error('No fue posible consultar los productos.');
+            }
+
+            return response.json();
+        })
+
+        .then(data => {
+
+            productos = data;
+
+            mostrarProductos(productos);
+        })
+
+        .catch(error => {
+
+            document.getElementById('products').innerHTML = `
+                <div class="error">
+                    ${error.message}
+                </div>
+            `;
+
+        });
+
+
+    // Muestra los productos recibidos desde Spring Boot.
+    function mostrarProductos(lista) {
+
+        const contenedor = document.getElementById('products');
+
+        if (lista.length === 0) {
+
+            contenedor.innerHTML = `
+                <div class="error">
+                    No se encontraron robots.
+                </div>
+            `;
+
+            return;
+        }
+
+        contenedor.innerHTML = lista.map(producto => `
+
+            <article class="product-card">
+
+                <div class="robot-image">
+                    🤖
+                </div>
+
+                <h3>${producto.nombre}</h3>
+
+                <p class="model">
+                    Modelo: ${producto.modelo}
+                </p>
+
+                <p class="price">
+                    $${producto.precio.toLocaleString('es-CO')}
+                </p>
+
+                <p class="stock">
+                    📦 Disponibles: ${producto.cantidad}
+                </p>
+
+                <button
+                    class="details"
+                    onclick="verDetalles(${producto.id})">
+
+                    Ver detalles
+
+                </button>
+
+            </article>
+
+        `).join('');
+    }
+
+
+    // Permite filtrar robots por nombre o modelo.
+    document.getElementById('search').addEventListener('input', function () {
+
+        const texto = this.value.toLowerCase();
+
+        const filtrados = productos.filter(producto =>
+            producto.nombre.toLowerCase().includes(texto) ||
+            producto.modelo.toLowerCase().includes(texto)
+        );
+
+        mostrarProductos(filtrados);
+
+    });
+
+
+    // Consulta individualmente un robot mediante su ID.
+    function verDetalles(id) {
+
+        fetch(`/productos/${id}`)
+            .then(response => response.json())
+            .then(producto => {
+
+                alert(
+                    `Robot: ${producto.nombre}\n` +
+                    `Modelo: ${producto.modelo}\n` +
+                    `Precio: $${producto.precio.toLocaleString('es-CO')}\n` +
+                    `Cantidad disponible: ${producto.cantidad}`
+                );
+
+            });
+
+    }
+
+</script>
+
+</body>
+</html>
